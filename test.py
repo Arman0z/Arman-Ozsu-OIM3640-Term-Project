@@ -58,15 +58,19 @@ print(ad_df)
 #TODO Live Games
 f = "{awayTeam} vs. {homeTeam} @ {gameTimeLTZ}" 
 board = scoreboard.ScoreBoard()
-print(f"NBA Schedule for: {board.score_board_date}")
+print(f"\nNBA Schedule for: {board.score_board_date}")
 games = board.games.get_dict()
 num_of_games = 0
 for game in games:
     num_of_games += 1
     gameTimeLTZ = parser.parse(game["gameTimeUTC"]).replace(tzinfo=timezone.utc).astimezone(tz=None)
     print(f.format(gameId=game['gameId'], awayTeam=game['awayTeam']['teamName'], homeTeam=game['homeTeam']['teamName'], gameTimeLTZ=gameTimeLTZ))
-print(f"There are {num_of_games} Games Today!")
+print(f"\n\nThere are {num_of_games} Games Today!")
 
+from nba_api.live.nba.endpoints import boxscore
+box = boxscore.BoxScore('0022000196') 
+box.game.get_dict()
+print(box)
 
 
 
