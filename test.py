@@ -1,12 +1,15 @@
 print("Loading Libraries . . . . . . . . . . . . . . . . . . . . . .")
 
 from nba_api.stats.endpoints import playercareerstats
+from nba_api.stats.endpoints import leagueleaders
 from nba_api.stats.static import teams
 from nba_api.stats.static import players   
 
 from datetime import datetime, timezone
 from dateutil import parser
 from nba_api.live.nba.endpoints import scoreboard
+
+import re
 
 import numpy
 import pandas as pd
@@ -17,11 +20,16 @@ print ("\n\n\nDone Loading Libraries . . . . . . . . . . . . .\n\n\n")
 # Nikola Jokić
 nikolaJ = playercareerstats.PlayerCareerStats(player_id='203999') 
 
+ll = leagueleaders.LeagueLeaders(league_id='00')
+ll_df = ll.get_data_frames()[0]
+print (ll_df)
+ll_df = ll_df [["PLAYER", "TEAM", "PTS"]]
+ll_10_df = ll_df.head(11)
+# print(ll_df.groupby(['TEAM']).mean())
+# print(ll_df.loc('TEAM'))
+
 # Today's Score Board
 games = scoreboard.ScoreBoard()
-
-# json
-games.get_json()
 
 # dictionary
 games.get_dict()
@@ -29,9 +37,9 @@ games.get_dict()
 
 # get_teams returns a list of 30 dictionaries, each an NBA team.
 nba_teams = teams.get_teams()
-print("Number of teams fetched: {}".format(len(nba_teams)))
+print(f"Number of teams fetched: {len(nba_teams)}")
 nba_teams[:3]
-# print(nba_teams)
+print(nba_teams)
 
 nba_players = players.get_players()
 print("Number of players fetched: {}".format(len(nba_players)))
@@ -39,7 +47,7 @@ nba_players[:5]
 # print(nba_players)
 
 spurs = [team for team in nba_teams if team["full_name"] == "San Antonio Spurs"][0]
-# print(spurs)
+print(spurs)
 
 big_fundamental = [
     player for player in nba_players if player["full_name"] == "Tim Duncan"
