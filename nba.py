@@ -128,13 +128,23 @@ def live_games():
             f"{game['awayTeam']['teamName']} vs. {game['homeTeam']['teamName']} @ {gametime}"
         )
 
+def yes_no(input):
+    """
+    Determines if the user input is yes or no and displays today's nba schedule
+    """
+    x = input.lower()
+    if x == 'no':
+        return None
+    else:
+        live_games()
 
 def main():
     user_input = input("Enter a team or player: ")
     subject = identify_subject(user_input)
     data = fetch_data(subject)
     generate_report(user_input, subject, data)
-    live_games()
+    user_input2 = input("\nWant to see today's nba schedule?\n")
+    yes_no(user_input2)
 
 
 if __name__ == "__main__":
